@@ -16,6 +16,8 @@ type
   TRequest = class
   public
     class function New: IRequest;
+	  class procedure setDefaultBaseUrl(url: string);
+	  class procedure setDefaultBearer(token: string);
   end;
 
 {$IF NOT (DEFINED(RR4D_INDY) or DEFINED(FPC) or DEFINED(RR4D_NETHTTP))}
@@ -59,6 +61,10 @@ uses
     RESTRequest4D.Request.Client;
   {$ENDIF}
 
+var
+	gBaseUrl: string = '';
+  gBearerToken: string = '';
+  
 class function TRequest.New: IRequest;
 begin
   {$IF DEFINED(FPC) and (not DEFINED(RR4D_INDY)) and (not DEFINED(RR4D_SYNAPSE))}
@@ -74,6 +80,12 @@ begin
   {$ELSE}
     Result := TRequestClient.New;
   {$ENDIF}
+  
+  if gBaseUrl <> '' then
+	  Result.BaseURL(gBaseUrl);
+
+	if gBearerToken <> '' then
+	  Result.TokenBearer(gBearerToken);
 end;
 
 end.
