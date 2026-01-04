@@ -36,8 +36,16 @@ type
 
     // GET
     class function Get(const Resource: string): TApiResponse; overload;
+    {
+    Params := TDictionary<string, string>.Create;
+    Params.Add('page', '1');
+    Params.Add('limit', '20');
+
+    TRequest.Get('/orders', Params);
+    }
     class function Get(const Resource: string;
       const Params: TDictionary<string, string>): TApiResponse; overload;
+    // TRequest.Get('/orders', ['page', '1', 'limit', '20']);
     class function Get(const Resource: string; const Params: array of string)
       : TApiResponse; overload;
 
